@@ -5,8 +5,8 @@ def show_data() -> None:
 
 def add_data() -> None:
     """Добавляет информацию в справочник."""
-    fio = input('Введите ФИО')
-    phone_num = input('Введите номер телефона')
+    fio = input('Введите ФИО: ')
+    phone_num = input('Введите номер телефона: ')
     with open('book.txt', 'a', encoding='utf-8') as file:
         file.write(f'\n{fio} | {phone_num}')
 

@@ -1,0 +1,119 @@
+Что такое атрибут экземпляра? - Переменная, относящаяся только к конкретному экземпляру класса
+
+                                            !!! Методы и свойства !!!
+
+Моносостояние можно создать при помощи одного общего словаря __shared_attr (Если вы хотите, чтобы у всех ваших
+ экземпляров были одни общие атрибуты, вы можете воспользоваться паттерном «Моносостояние». Он позволяет
+  реализовать одно состояние для атрибутов всех наших ЭК
+
+Как определить защищенный метод в Python? - Добавить подчеркивание в начало имени метода (_abc)
+
+Как определить приватный метод в Python? - Добавить двойное подчеркивание в начало имени метода (__abc)
+
+
+                                    !!! Геттеры и сеттеры, property атрибуты !!!
+
+Что из следующего является правильной реализацией геттера? - def get_name(self):
+
+Что из следующего является правильной реализацией сеттера? - def set_name(self, value): (сеттеры бывают медленнее чем
+прямой доступ к атрибутам класса)
+
+О property:
+В чем разница между использованием метода геттер и свойством, полученным через property, для доступа к переменной класса
+ в Python? - Свойство property позволяет получить доступ к атрибуту без круглых скобок -
+ (title = property(fget=__get_name) =
+    reward = property(fget=__get_salary, fset=__set_salary)
+
+
+
+                                     !!!   Classmethod и staticmethod   !!!
+
+
+Class method vs Static Method
+
+Метод класса принимает cls в качестве первого параметра, в то время как статический метод не нуждается в определенных параметрах.
+Метод класса может получить доступ к состоянию класса или изменить его, в то время как статический метод не может получить к нему доступ или изменить его.
+Как правило, статические методы ничего не знают о состоянии класса.
+Когда что использовать?
+
+Обычно мы используем Class method для создания фабричных методов. Фабричные методы возвращают объекты класса (похожие на конструктор) для различных вариантов использования.
+Обычно мы используем статические методы для создания служебных функций.
+
+
+                                     !!! __str__ и __repr__!!!
+
+Для формирования строковых представлений экземпляров классов по умолчанию используется метод __str__.
+
+
+Какова цель использования метода __getitem__ в классе Python?
+Чтобы объекты класса поддерживали операцию индексирования(обращения по индексу), как список или словарь
+
+
+                                    !!! __iter__ and __next__ !!!
+
+misha_marks = Marks([3, 4, 5])
+misha = Student('Misha', 'Ivanov', misha_marks)
+for m in misha:
+    print(m)
+
+ЕСЛИ __iter__ в Student возвращает self, то в __next__ получается, что не поддерживается ни len(self.marks) ни обращение
+ по индексу self.marks[self.index] т.к. у экземпляра misha_marks класса Marks нет длины и  нет возможности
+  обратиться по индексу.
+
+чтобы не было ошибок, нужно в __next__ класса Student дописывать атрибуты класса Marks, чтобы попасть в нужный список:
+len(self.marks.values)   и    self.marks.values[self.index]
+и итерация пойдет через метод __next__ класса  Student:
+# ==> call iter Student
+# ==> call next Student = 3
+# ==> call next Student = 4
+# ==> call next Student = 5
+
+ЕСЛИ __iter__ в Student возвращает self.marks, то __next__ в Students вообще не нужен. дальше берется __next__ из класса
+ Marks и итерация пойдет через класс Marks:
+
+# ==> call iter Student
+# ==> call next, marks = 3
+# ==> call next, marks = 4
+# ==> call next, marks = 5
+
+class Marks:
+    def __init__(self, values):
+        self.values = values
+        self.index = 0
+
+    def __iter__(self):
+        print('call iter Mark')
+        return self
+
+    def __next__(self):
+        if self.index >= len(self.values):
+            self.index = 0
+            raise StopIteration
+        mark = self.values[self.index]
+        self.index += 1
+        return f'call next, mark = {mark}'
+
+
+class Student:
+    def __init__(self, name, surname, marks):
+        self.name = name
+        self.surname = surname
+        self.marks = marks
+
+    def __iter__(self):
+        print('call iter Student')
+        self.index = 0
+        return self.marks
+
+    # def __next__(self):
+    #     if self.index >= len(self.marks):
+    #         raise StopIteration
+    #     res = self.marks[self.index]
+    #     self.index += 1
+    #     return f'call next Student = {res}'
+
+
+misha_marks = Marks([3, 4, 5])
+misha = Student('Misha', 'Ivanov', misha_marks)
+for m in misha:
+    print(m)

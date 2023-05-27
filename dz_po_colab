@@ -1,0 +1,91 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/maga74518/123.py/blob/master/dz_po_colab\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "data = pd.read_csv('sample_data/california_housing_train.csv')\n",
+        "\n",
+        "filtered_data = data[(data['population'] >= 0) & (data['population'] <= 500)]\n",
+        "\n",
+        "average_house_price = filtered_data['median_house_value'].mean()\n",
+        "\n",
+        "print(f\"Средняя стоимость дома для населения от 0 до 500: ${average_house_price:.2f}\")"
+      ],
+      "metadata": {
+        "id": "WQSuQ2_Z32fI",
+        "outputId": "35c99cf4-757c-4f19-eec1-86d66e093085",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Средняя стоимость дома для населения от 0 до 500: $206799.95\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "data = pd.read_csv('sample_data/california_housing_train.csv')\n",
+        "\n",
+        "min_population = data['population'].min()\n",
+        "\n",
+        "filtered_data = data[data['population'] == min_population]\n",
+        "\n",
+        "max_households = filtered_data['households'].max()\n",
+        "\n",
+        "print(f\"Максимальное значение households в зоне минимального значения population: {max_households}\")"
+      ],
+      "metadata": {
+        "id": "2B--Gr6X4Lh4",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "c4cd0475-d613-4ced-ffa4-a3dc46b71efd"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Максимальное значение households в зоне минимального значения population: 4.0\n"
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "toc_visible": true,
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
